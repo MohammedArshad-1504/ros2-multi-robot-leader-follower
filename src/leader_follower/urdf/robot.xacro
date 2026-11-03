@@ -1,0 +1,467 @@
+<?xml version="1.0"?>
+
+<robot
+    name="leader_follower_bot"
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+    <!-- ========================================================= -->
+    <!-- ROBOT PARAMETERS                                         -->
+    <!-- ========================================================= -->
+
+    <xacro:arg name="prefix" default=""/>
+
+    <xacro:arg name="cmd_vel_topic" default="/cmd_vel"/>
+
+    <xacro:arg name="odom_topic" default="/odom"/>
+
+    <xacro:arg name="odom_frame" default="odom"/>
+
+    <xacro:arg name="base_frame" default="base_link"/>
+
+    <xacro:arg name="lidar_topic" default="/front_lidar/scan"/>
+
+    <xacro:arg name="camera_topic" default="/front_camera/image_raw"/>
+
+    <xacro:arg name="tf_topic" default="/tf"/>
+
+
+    <!-- ========================================================= -->
+    <!-- ROBOT DIMENSIONS                                         -->
+    <!-- ========================================================= -->
+
+    <xacro:property
+        name="robot_length"
+        value="0.60"/>
+
+    <xacro:property
+        name="robot_width"
+        value="0.45"/>
+
+    <xacro:property
+        name="robot_height"
+        value="0.15"/>
+
+    <xacro:property
+        name="robot_mass"
+        value="10.0"/>
+
+
+    <!-- ========================================================= -->
+    <!-- WHEEL DIMENSIONS                                         -->
+    <!-- ========================================================= -->
+
+    <xacro:property
+        name="wheel_radius"
+        value="0.075"/>
+
+    <xacro:property
+        name="wheel_width"
+        value="0.04"/>
+
+    <xacro:property
+        name="wheel_mass"
+        value="0.5"/>
+
+
+    <!-- ========================================================= -->
+    <!-- WHEEL POSITIONS                                          -->
+    <!-- ========================================================= -->
+
+    <xacro:property
+        name="wheel_x"
+        value="${robot_length / 2.0 - wheel_radius}"/>
+
+    <xacro:property
+        name="wheel_y"
+        value="${robot_width / 2.0 + wheel_width / 2.0}"/>
+
+    <xacro:property
+        name="wheel_z"
+        value="0.0"/>
+
+
+    <!-- ========================================================= -->
+    <!-- WHEEL FRICTION / CONTACT                                 -->
+    <!-- ========================================================= -->
+
+    <xacro:property
+        name="wheel_mu1"
+        value="0.9"/>
+
+    <xacro:property
+        name="wheel_mu2"
+        value="0.2"/>
+
+    <xacro:property
+        name="wheel_kp"
+        value="1000000.0"/>
+
+    <xacro:property
+        name="wheel_kd"
+        value="1.0"/>
+
+
+    <!-- ========================================================= -->
+    <!-- ROBOT LINK NAMES                                         -->
+    <!-- ========================================================= -->
+
+    <xacro:property
+        name="base_link_name"
+        value="$(arg prefix)base_link"/>
+
+    <xacro:property
+        name="left_front_wheel_name"
+        value="$(arg prefix)left_front_wheel"/>
+
+    <xacro:property
+        name="left_rear_wheel_name"
+        value="$(arg prefix)left_rear_wheel"/>
+
+    <xacro:property
+        name="right_front_wheel_name"
+        value="$(arg prefix)right_front_wheel"/>
+
+    <xacro:property
+        name="right_rear_wheel_name"
+        value="$(arg prefix)right_rear_wheel"/>
+
+
+    <!-- ========================================================= -->
+    <!-- LIDAR DIMENSIONS                                         -->
+    <!-- ========================================================= -->
+
+    <xacro:property
+        name="lidar_radius"
+        value="0.04"/>
+
+    <xacro:property
+        name="lidar_height"
+        value="0.05"/>
+
+
+    <!-- ========================================================= -->
+    <!-- LIDAR STAND                                              -->
+    <!-- ========================================================= -->
+
+    <xacro:property
+        name="stand_height"
+        value="0.10"/>
+
+    <xacro:property
+        name="stand_radius"
+        value="0.025"/>
+
+
+    <!-- ========================================================= -->
+    <!-- CAMERA DIMENSIONS                                        -->
+    <!-- ========================================================= -->
+
+    <xacro:property
+        name="camera_length"
+        value="0.04"/>
+
+    <xacro:property
+        name="camera_width"
+        value="0.08"/>
+
+    <xacro:property
+        name="camera_height"
+        value="0.04"/>
+
+
+    <!-- ========================================================= -->
+    <!-- CAMERA POSITION                                          -->
+    <!-- ========================================================= -->
+
+    <xacro:property
+        name="camera_x"
+        value="${robot_length / 2.0 - camera_length / 2.0}"/>
+
+    <xacro:property
+        name="camera_y"
+        value="0.0"/>
+
+    <xacro:property
+        name="camera_z"
+        value="${robot_height + camera_height / 2.0}"/>
+
+
+    <!-- ========================================================= -->
+    <!-- INCLUDE COMPONENTS                                       -->
+    <!-- ========================================================= -->
+
+    <xacro:include filename="base.xacro"/>
+
+    <xacro:include filename="wheels.xacro"/>
+
+    <xacro:include filename="stand.xacro"/>
+
+    <xacro:include filename="lidar.xacro"/>
+
+    <xacro:include filename="camera.xacro"/>
+
+
+    <!-- ========================================================= -->
+    <!-- BASE                                                     -->
+    <!-- ========================================================= -->
+
+    <xacro:robot_base
+        length="${robot_length}"
+        width="${robot_width}"
+        height="${robot_height}"
+        mass="${robot_mass}"
+        link_name="${base_link_name}"/>
+
+
+    <!-- ========================================================= -->
+    <!-- LEFT FRONT WHEEL                                         -->
+    <!-- ========================================================= -->
+
+    <xacro:wheel
+        name="${left_front_wheel_name}"
+        x="${wheel_x}"
+        y="${wheel_y}"
+        z="${wheel_z}"
+        radius="${wheel_radius}"
+        width="${wheel_width}"
+        mass="${wheel_mass}"
+        friction_mu1="${wheel_mu1}"
+        friction_mu2="${wheel_mu2}"
+        contact_kp="${wheel_kp}"
+        contact_kd="${wheel_kd}"
+        parent_link="${base_link_name}"/>
+
+
+    <!-- ========================================================= -->
+    <!-- LEFT REAR WHEEL                                          -->
+    <!-- ========================================================= -->
+
+    <xacro:wheel
+        name="${left_rear_wheel_name}"
+        x="-${wheel_x}"
+        y="${wheel_y}"
+        z="${wheel_z}"
+        radius="${wheel_radius}"
+        width="${wheel_width}"
+        mass="${wheel_mass}"
+        friction_mu1="${wheel_mu1}"
+        friction_mu2="${wheel_mu2}"
+        contact_kp="${wheel_kp}"
+        contact_kd="${wheel_kd}"
+        parent_link="${base_link_name}"/>
+
+
+    <!-- ========================================================= -->
+    <!-- RIGHT FRONT WHEEL                                        -->
+    <!-- ========================================================= -->
+
+    <xacro:wheel
+        name="${right_front_wheel_name}"
+        x="${wheel_x}"
+        y="-${wheel_y}"
+        z="${wheel_z}"
+        radius="${wheel_radius}"
+        width="${wheel_width}"
+        mass="${wheel_mass}"
+        friction_mu1="${wheel_mu1}"
+        friction_mu2="${wheel_mu2}"
+        contact_kp="${wheel_kp}"
+        contact_kd="${wheel_kd}"
+        parent_link="${base_link_name}"/>
+
+
+    <!-- ========================================================= -->
+    <!-- RIGHT REAR WHEEL                                         -->
+    <!-- ========================================================= -->
+
+    <xacro:wheel
+        name="${right_rear_wheel_name}"
+        x="-${wheel_x}"
+        y="-${wheel_y}"
+        z="${wheel_z}"
+        radius="${wheel_radius}"
+        width="${wheel_width}"
+        mass="${wheel_mass}"
+        friction_mu1="${wheel_mu1}"
+        friction_mu2="${wheel_mu2}"
+        contact_kp="${wheel_kp}"
+        contact_kd="${wheel_kd}"
+        parent_link="${base_link_name}"/>
+
+
+    <!-- ========================================================= -->
+    <!-- LIDAR                                                    -->
+    <!-- ========================================================= -->
+
+    <xacro:lidar
+        name="$(arg prefix)front_lidar"
+        radius="${lidar_radius}"
+        height="${lidar_height}"
+        topic="$(arg lidar_topic)"/>
+
+
+    <!-- ========================================================= -->
+    <!-- BASE -> LIDAR                                            -->
+    <!-- ========================================================= -->
+
+    <joint
+        name="$(arg prefix)base_to_lidar"
+        type="fixed">
+
+        <parent link="${base_link_name}"/>
+
+        <child link="$(arg prefix)front_lidar_link"/>
+
+        <origin
+            xyz="0 0 ${robot_height + stand_height}"
+            rpy="0 0 0"/>
+
+    </joint>
+
+
+    <!-- ========================================================= -->
+    <!-- LIDAR STAND                                              -->
+    <!-- ========================================================= -->
+
+    <xacro:lidar_stand
+        name="$(arg prefix)lidar_stand"
+        height="${stand_height}"
+        radius="${stand_radius}"/>
+
+
+    <joint
+        name="$(arg prefix)base_to_lidar_stand"
+        type="fixed">
+
+        <parent link="${base_link_name}"/>
+
+        <child link="$(arg prefix)lidar_stand_link"/>
+
+        <origin
+            xyz="0 0 ${robot_height}"
+            rpy="0 0 0"/>
+
+    </joint>
+
+
+    <!-- ========================================================= -->
+    <!-- FRONT CAMERA                                             -->
+    <!-- ========================================================= -->
+
+    <xacro:camera
+        name="$(arg prefix)front_camera"
+        x="${camera_x}"
+        y="${camera_y}"
+        z="${camera_z}"
+        length="${camera_length}"
+        width="${camera_width}"
+        height="${camera_height}"
+        topic="$(arg camera_topic)"
+        parent_link="${base_link_name}"/>
+
+
+    <!-- ========================================================= -->
+    <!-- GAZEBO DIFFERENTIAL DRIVE                                -->
+    <!-- ========================================================= -->
+
+    <gazebo>
+
+        <plugin
+            filename="gz-sim-diff-drive-system"
+            name="gz::sim::systems::DiffDrive">
+
+
+            <!-- ================================================= -->
+            <!-- LEFT WHEELS                                        -->
+            <!-- ================================================= -->
+
+            <left_joint>
+                ${left_front_wheel_name}_joint
+            </left_joint>
+
+            <left_joint>
+                ${left_rear_wheel_name}_joint
+            </left_joint>
+
+
+            <!-- ================================================= -->
+            <!-- RIGHT WHEELS                                       -->
+            <!-- ================================================= -->
+
+            <right_joint>
+                ${right_front_wheel_name}_joint
+            </right_joint>
+
+            <right_joint>
+                ${right_rear_wheel_name}_joint
+            </right_joint>
+
+
+            <!-- ================================================= -->
+            <!-- ROBOT GEOMETRY                                     -->
+            <!-- ================================================= -->
+
+            <wheel_separation>
+                ${2.0 * wheel_y}
+            </wheel_separation>
+
+            <wheel_radius>
+                ${wheel_radius}
+            </wheel_radius>
+
+
+            <!-- ================================================= -->
+            <!-- COMMAND TOPIC                                     -->
+            <!-- ================================================= -->
+
+            <topic>
+                $(arg cmd_vel_topic)
+            </topic>
+
+
+            <!-- ================================================= -->
+            <!-- ODOMETRY TOPIC                                    -->
+            <!-- ================================================= -->
+
+            <odom_topic>
+                $(arg odom_topic)
+            </odom_topic>
+
+
+            <!-- ================================================= -->
+            <!-- TF TOPIC                                          -->
+            <!-- ================================================= -->
+
+            <tf_topic>
+                $(arg tf_topic)
+            </tf_topic>
+
+
+            <!-- ================================================= -->
+            <!-- TF FRAMES                                         -->
+            <!-- ================================================= -->
+
+            <frame_id>
+                $(arg odom_frame)
+            </frame_id>
+
+            <child_frame_id>
+                ${base_link_name}
+            </child_frame_id>
+
+
+            <!-- ================================================= -->
+            <!-- ODOMETRY RATE                                     -->
+            <!-- ================================================= -->
+
+            <odom_publish_frequency>
+                30
+            </odom_publish_frequency>
+
+        </plugin>
+
+    </gazebo>
+
+
+</robot>

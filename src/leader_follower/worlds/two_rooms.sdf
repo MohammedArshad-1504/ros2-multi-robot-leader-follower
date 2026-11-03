@@ -1,0 +1,993 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.10">
+
+  <world name="test_world">
+
+    <!-- ========================================================= -->
+    <!-- PHYSICS                                                   -->
+    <!-- ========================================================= -->
+
+    <plugin
+      name="gz::sim::systems::Physics"
+      filename="gz-sim-physics-system"/>
+
+    <physics name="1ms" type="ode">
+
+      <max_step_size>0.001</max_step_size>
+
+      <real_time_factor>1</real_time_factor>
+
+      <real_time_update_rate>1000</real_time_update_rate>
+
+    </physics>
+
+
+    <!-- ========================================================= -->
+    <!-- SENSOR SYSTEM                                             -->
+    <!-- Required by LiDAR and camera                             -->
+    <!-- ========================================================= -->
+
+    <plugin
+      name="gz::sim::systems::Sensors"
+      filename="gz-sim-sensors-system">
+
+      <render_engine>ogre2</render_engine>
+
+    </plugin>
+
+
+    <!-- ========================================================= -->
+    <!-- GAZEBO SYSTEMS                                            -->
+    <!-- ========================================================= -->
+
+    <plugin
+      name="gz::sim::systems::UserCommands"
+      filename="gz-sim-user-commands-system"/>
+
+    <plugin
+      name="gz::sim::systems::SceneBroadcaster"
+      filename="gz-sim-scene-broadcaster-system"/>
+
+
+    <!-- ========================================================= -->
+    <!-- WORLD PHYSICS                                             -->
+    <!-- ========================================================= -->
+
+    <gravity>0 0 -9.81</gravity>
+
+
+    <!-- ========================================================= -->
+    <!-- SCENE                                                     -->
+    <!-- ========================================================= -->
+
+    <scene>
+
+      <ambient>0.4 0.4 0.4 1</ambient>
+
+      <background>0.7 0.7 0.7 1</background>
+
+      <shadows>true</shadows>
+
+    </scene>
+
+
+    <!-- ========================================================= -->
+    <!-- GROUND                                                    -->
+    <!-- ========================================================= -->
+
+    <model name="ground_plane">
+
+      <static>true</static>
+
+      <link name="ground_link">
+
+        <collision name="ground_collision">
+
+          <geometry>
+
+            <plane>
+
+              <normal>0 0 1</normal>
+
+              <size>30 20</size>
+
+            </plane>
+
+          </geometry>
+
+
+          <!-- Explicit wheel/floor friction -->
+
+          <surface>
+
+            <friction>
+
+              <ode>
+
+                <mu>1.0</mu>
+
+                <mu2>1.0</mu2>
+
+              </ode>
+
+            </friction>
+
+
+            <bounce>
+
+              <restitution_coefficient>0.0</restitution_coefficient>
+
+              <threshold>100000</threshold>
+
+            </bounce>
+
+
+            <contact>
+
+              <ode>
+
+                <kp>1000000</kp>
+
+                <kd>100</kd>
+
+              </ode>
+
+            </contact>
+
+          </surface>
+
+        </collision>
+
+
+        <visual name="ground_visual">
+
+          <geometry>
+
+            <plane>
+
+              <normal>0 0 1</normal>
+
+              <size>30 20</size>
+
+            </plane>
+
+          </geometry>
+
+
+          <material>
+
+            <ambient>0.55 0.55 0.55 1</ambient>
+
+            <diffuse>0.55 0.55 0.55 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- ROOM LAYOUT                                               -->
+    <!--                                                             -->
+    <!--                                                             -->
+    <!--              ROOM 1                                      -->
+    <!--        ┌───────────────┐                                 -->
+    <!--        │               │                                 -->
+    <!--        │               │                                 -->
+    <!--        │               │                                 -->
+    <!--        │               │                                 -->
+    <!--        └───────   ─────┘                                 -->
+    <!--                DOOR                                       -->
+    <!--                │                                          -->
+    <!--        ┌───────   ─────┐                                 -->
+    <!--        │               │                                 -->
+    <!--        │               │                                 -->
+    <!--        │               │                                 -->
+    <!--        │               │                                 -->
+    <!--        └───────────────┘                                 -->
+    <!--              ROOM 2                                      -->
+    <!--                                                             -->
+    <!-- ========================================================= -->
+
+
+    <!-- ========================================================= -->
+    <!-- ROOM 1 - LEFT WALL                                        -->
+    <!-- ========================================================= -->
+
+    <model name="room1_left_wall">
+
+      <static>true</static>
+
+      <link name="wall">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>0.20 8.0 2.8</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>0.20 8.0 2.8</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.7 0.7 0.7 1</ambient>
+
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>-5.0 2.0 1.4 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- ROOM 1 - RIGHT OUTER WALL                                 -->
+    <!-- ========================================================= -->
+
+    <model name="room1_right_wall">
+
+      <static>true</static>
+
+      <link name="wall">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>0.20 8.0 2.8</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>0.20 8.0 2.8</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.7 0.7 0.7 1</ambient>
+
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>5.0 2.0 1.4 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- ROOM 1 - BACK WALL                                        -->
+    <!-- ========================================================= -->
+
+    <model name="room1_back_wall">
+
+      <static>true</static>
+
+      <link name="wall">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>10.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>10.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.7 0.7 0.7 1</ambient>
+
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>0 6.0 1.4 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- ROOM 1 - FRONT WALL LEFT OF DOOR                          -->
+    <!-- ========================================================= -->
+
+    <model name="room1_front_left">
+
+      <static>true</static>
+
+      <link name="wall">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>4.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>4.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.7 0.7 0.7 1</ambient>
+
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>-3.0 -2.0 1.4 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- ROOM 1 - FRONT WALL RIGHT OF DOOR                         -->
+    <!-- ========================================================= -->
+
+    <model name="room1_front_right">
+
+      <static>true</static>
+
+      <link name="wall">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>4.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>4.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.7 0.7 0.7 1</ambient>
+
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>3.0 -2.0 1.4 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- ROOM 2 - LEFT WALL                                        -->
+    <!-- ========================================================= -->
+
+    <model name="room2_left_wall">
+
+      <static>true</static>
+
+      <link name="wall">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>0.20 8.0 2.8</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>0.20 8.0 2.8</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.7 0.7 0.7 1</ambient>
+
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>-5.0 -6.0 1.4 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- ROOM 2 - RIGHT WALL                                       -->
+    <!-- ========================================================= -->
+
+    <model name="room2_right_wall">
+
+      <static>true</static>
+
+      <link name="wall">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>0.20 8.0 2.8</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>0.20 8.0 2.8</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.7 0.7 0.7 1</ambient>
+
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>5.0 -6.0 1.4 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- ROOM 2 - FRONT WALL LEFT OF DOOR                          -->
+    <!-- ========================================================= -->
+
+    <model name="room2_front_left">
+
+      <static>true</static>
+
+      <link name="wall">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>4.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>4.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.7 0.7 0.7 1</ambient>
+
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>-3.0 -2.0 1.4 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- ROOM 2 - FRONT WALL RIGHT OF DOOR                         -->
+    <!-- ========================================================= -->
+
+    <model name="room2_front_right">
+
+      <static>true</static>
+
+      <link name="wall">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>4.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>4.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.7 0.7 0.7 1</ambient>
+
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>3.0 -2.0 1.4 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- ROOM 2 - BACK WALL                                        -->
+    <!-- ========================================================= -->
+
+    <model name="room2_back_wall">
+
+      <static>true</static>
+
+      <link name="wall">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>10.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>10.0 0.20 2.8</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.7 0.7 0.7 1</ambient>
+
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>0 -10.0 1.4 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- OBSTACLE 1                                               -->
+    <!-- ========================================================= -->
+
+    <model name="obstacle_1">
+
+      <static>true</static>
+
+      <link name="link">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>1.2 1.2 1.0</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>1.2 1.2 1.0</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.35 0.35 0.35 1</ambient>
+
+            <diffuse>0.35 0.35 0.35 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>2.0 3.5 0.5 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- OBSTACLE 2                                               -->
+    <!-- ========================================================= -->
+
+    <model name="obstacle_2">
+
+      <static>true</static>
+
+      <link name="link">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>1.0 2.0 1.0</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>1.0 2.0 1.0</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.35 0.35 0.35 1</ambient>
+
+            <diffuse>0.35 0.35 0.35 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>-2.5 0.5 0.5 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- OBSTACLE 3                                               -->
+    <!-- ========================================================= -->
+
+    <model name="obstacle_3">
+
+      <static>true</static>
+
+      <link name="link">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <cylinder>
+
+              <radius>0.6</radius>
+
+              <length>1.0</length>
+
+            </cylinder>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <cylinder>
+
+              <radius>0.6</radius>
+
+              <length>1.0</length>
+
+            </cylinder>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.3 0.3 0.3 1</ambient>
+
+            <diffuse>0.3 0.3 0.3 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>2.5 -6.0 0.5 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- OBSTACLE 4                                               -->
+    <!-- ========================================================= -->
+
+    <model name="obstacle_4">
+
+      <static>true</static>
+
+      <link name="link">
+
+        <collision name="collision">
+
+          <geometry>
+
+            <box>
+
+              <size>1.5 1.0 1.0</size>
+
+            </box>
+
+          </geometry>
+
+        </collision>
+
+
+        <visual name="visual">
+
+          <geometry>
+
+            <box>
+
+              <size>1.5 1.0 1.0</size>
+
+            </box>
+
+          </geometry>
+
+          <material>
+
+            <ambient>0.35 0.35 0.35 1</ambient>
+
+            <diffuse>0.35 0.35 0.35 1</diffuse>
+
+          </material>
+
+        </visual>
+
+      </link>
+
+
+      <pose>-2.0 -7.5 0.5 0 0 0</pose>
+
+    </model>
+
+
+    <!-- ========================================================= -->
+    <!-- SUN                                                        -->
+    <!-- ========================================================= -->
+
+    <light name="sun" type="directional">
+
+      <pose>0 0 10 0 0 0</pose>
+
+      <cast_shadows>true</cast_shadows>
+
+      <intensity>1.0</intensity>
+
+      <direction>-0.5 0.1 -0.9</direction>
+
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+
+      <specular>0.2 0.2 0.2 1</specular>
+
+    </light>
+
+  </world>
+
+</sdf>

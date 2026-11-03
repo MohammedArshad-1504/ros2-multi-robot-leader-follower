@@ -1,0 +1,19 @@
+# ROS 2 build artifacts
+build/
+install/
+log/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+
+# Generated TF graphs
+*.gv
+*.gv.pdf
+
+# Generated PDFs
+*.pdf

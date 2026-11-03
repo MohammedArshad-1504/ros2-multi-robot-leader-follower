@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro
+        name="lidar_stand"
+        params="name height radius">
+
+        <link name="${name}_link">
+
+            <visual>
+
+                <origin
+                    xyz="0 0 ${height / 2.0}"
+                    rpy="0 0 0"/>
+
+                <geometry>
+                    <cylinder
+                        radius="${radius}"
+                        length="${height}"/>
+                </geometry>
+
+                <material name="${name}_yellow">
+                    <color rgba="1.0 1.0 0.0 1.0"/>
+                </material>
+
+            </visual>
+
+            <collision>
+
+                <origin
+                    xyz="0 0 ${height / 2.0}"
+                    rpy="0 0 0"/>
+
+                <geometry>
+                    <cylinder
+                        radius="${radius}"
+                        length="${height}"/>
+                </geometry>
+
+            </collision>
+
+        </link>
+
+    </xacro:macro>
+
+</robot>

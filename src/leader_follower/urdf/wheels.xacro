@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro
+        name="wheel"
+        params="name x y z radius width mass friction_mu1 friction_mu2 contact_kp contact_kd parent_link">
+
+        <!-- ===================================================== -->
+        <!-- WHEEL LINK                                            -->
+        <!-- ===================================================== -->
+
+        <link name="${name}">
+
+            <visual>
+
+                <origin
+                    xyz="0 0 0"
+                    rpy="1.5708 0 0"/>
+
+                <geometry>
+
+                    <cylinder
+                        radius="${radius}"
+                        length="${width}"/>
+
+                </geometry>
+
+            </visual>
+
+
+            <collision>
+
+                <origin
+                    xyz="0 0 0"
+                    rpy="1.5708 0 0"/>
+
+                <geometry>
+
+                    <cylinder
+                        radius="${radius}"
+                        length="${width}"/>
+
+                </geometry>
+
+            </collision>
+
+
+            <inertial>
+
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0"/>
+
+                <mass value="${mass}"/>
+
+                <inertia
+                    ixx="0.001"
+                    ixy="0"
+                    ixz="0"
+                    iyy="0.001"
+                    iyz="0"
+                    izz="0.001"/>
+
+            </inertial>
+
+        </link>
+
+
+        <!-- ===================================================== -->
+        <!-- WHEEL JOINT                                           -->
+        <!-- ===================================================== -->
+
+        <joint
+            name="${name}_joint"
+            type="continuous">
+
+            <parent link="${parent_link}"/>
+
+            <child link="${name}"/>
+
+            <origin
+                xyz="${x} ${y} ${z}"
+                rpy="0 0 0"/>
+
+            <axis xyz="0 1 0"/>
+
+        </joint>
+
+
+        <!-- ===================================================== -->
+        <!-- GAZEBO WHEEL CONTACT                                  -->
+        <!-- ===================================================== -->
+
+        <gazebo reference="${name}">
+
+            <mu1>${friction_mu1}</mu1>
+
+            <mu2>${friction_mu2}</mu2>
+
+            <kp>${contact_kp}</kp>
+
+            <kd>${contact_kd}</kd>
+
+            <fdir1>1 0 0</fdir1>
+
+        </gazebo>
+
+    </xacro:macro>
+
+
+    <!-- ========================================================= -->
+    <!-- GAZEBO JOINT STATE PUBLISHER                             -->
+    <!-- ========================================================= -->
+
+    <gazebo>
+
+        <plugin
+            filename="gz-sim-joint-state-publisher-system"
+            name="gz::sim::systems::JointStatePublisher"/>
+
+    </gazebo>
+
+</robot>

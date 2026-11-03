@@ -1,0 +1,28 @@
+/**:
+  ros__parameters:
+    use_sim_time: true
+
+    spacing: 1.0
+    slot_tolerance: 0.08
+    rejoin_distance: 1.20
+
+    linear_gain: 0.8
+    angular_gain: 1.8
+    max_linear_speed: 0.50
+    max_angular_speed: 1.00
+    control_rate: 20.0
+    data_timeout: 0.50
+
+    stuck_timeout: 1.50
+    stuck_min_command: 0.10
+    stuck_min_motion: 0.025
+    recovery_turn_time: 1.00
+
+    map_yaml: '~/leader_follower_ws/maps/two_rooms_map.yaml'
+    map_inflation_radius: 0.30
+    map_replan_distance: 0.20
+
+    obstacle_stop_distance: 0.55
+    obstacle_slow_distance: 0.95
+    local_inflation_radius: 0.35
+
